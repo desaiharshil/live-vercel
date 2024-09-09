@@ -6,11 +6,12 @@ const { json } = require('stream/consumers');
 const { connect } = require('http2');
 
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-  });
+    host: "bmntkp8je18cxxvq1byf-mysql.services.clever-cloud.com",
+    user: "ualbqnelteanozze",
+    password: "NxtZJn5Kr66nuI9sJDY3",
+    port: 3306,
+    database: "bmntkp8je18cxxvq1byf",
+});
 
 connection.connect(function () {
     console.log('Database connected')
@@ -18,8 +19,8 @@ connection.connect(function () {
 
 
 exports.insertbusiness = (req, res) => {
-    console.log(req.body.business_id)
-    var insert = 'insert into tbl_business ( business_name) values(?)';
+    console.log(req.body.business_name)
+    var insert = 'INSERT INTO tbl_business (business_name) values(?)';
     connection.query(insert, [
         req.body.business_name
     ],
@@ -35,7 +36,7 @@ exports.insertbusiness = (req, res) => {
 
 exports.getbusinesdata = (req, res) => {
     console.log(req.params.id)
-    var getBusiness = 'SELECT * FROM tbl_business WHERE business_id';
+    var getBusiness = 'SELECT * FROM tbl_business WHERE business_id =?';
     connection.query(getBusiness,
         function (err, results) {
             if (err) throw err
