@@ -2,13 +2,13 @@
     "version": 2,
     "builds": [
         {
-            "src": "APImain.js",
+            "src": "./APImain.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
-            "src": "/APImain/(.*)",
+            "src": "/(.*)",
             "dest": "/APImain.js"
         }
     ]
