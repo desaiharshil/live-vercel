@@ -19,7 +19,7 @@ connection.connect(function () {
 
 
 exports.insertbusiness = (req, res) => {
-    console.log(req.body.business_name,"============>")
+    console.log(req.body.business_name, "============>")
     var insert = 'INSERT INTO tbl_business (business_id, business_name) values(?,?)';
     connection.query(insert, [
         req.body.business_id,
@@ -36,7 +36,7 @@ exports.insertbusiness = (req, res) => {
 }
 
 exports.getbusinesdata = (req, res) => {
-    var getBusiness = 'SELECT * FROM tbl_business WHERE business_id';
+    var getBusiness = 'SELECT * FROM tbl_business';
     connection.query(getBusiness,
         function (err, results) {
             if (err) throw err
@@ -75,8 +75,8 @@ exports.idget = (req, res) => {
 }
 
 exports.insertdata = (req, res) => {
-    // console.log(req.body.business_id)
-    var insert = 'insert into tbl_category(business_id, category_name, category_type) values(?,?,?)';
+    console.log(req.body.business_id)
+    var insert = 'INSERT INTO tbl_category(business_id, category_name, category_type) values(?,?,?)';
     connection.query(insert, [
 
         req.body.business_id,
@@ -136,7 +136,7 @@ exports.deletebyId = (req, res) => {
 
 exports.byIncategory = (req, res) => {
     // console.log(req.params.id)
-    var bycat = 'select * from tbl_category where category_type="Cash In" and business_id=?';
+    var bycat = 'SELECT * FROM tbl_category where category_type="Cash In" and business_id=?';
     connection.query(bycat, [req.params.id, req.body.category_type],
         function (err, results) {
             if (err) {
@@ -165,7 +165,7 @@ exports.byOutcategory = (req, res) => {
 // data post in add cash in button
 exports.postdata = (req, res) => {
     console.log(req.body.business_id)
-    var post = 'insert into tbl_transaction(category_id,transaction_date, transaction_category_type,remark, transaction_amount,transaction_business_id) values(?,?,?,?,?,?)';
+    var post = 'INSERT INTO tbl_transaction(category_id,transaction_date, transaction_category_type,remark, transaction_amount,transaction_business_id) values(?,?,?,?,?,?)';
     connection.query(post, [
         req.body.category_id,
         req.body.transaction_date,
@@ -187,7 +187,7 @@ exports.postdata = (req, res) => {
 
 exports.postoutdata = (req, res) => {
     console.log(req.body.business_id)
-    var postout = 'insert into tbl_transaction(category_id, transaction_date,transaction_category_type, remark, transaction_amount,transaction_business_id) values(?,?,?,?,?,?);';
+    var postout = 'INSERT INTO tbl_transaction(category_id, transaction_date,transaction_category_type, remark, transaction_amount,transaction_business_id) values(?,?,?,?,?,?);';
     connection.query(postout, [
         req.body.category_id,
         req.body.transaction_date,
@@ -221,21 +221,21 @@ exports.getoneRecEdit = (req, res) => {
 
 }
 
-exports.editrecord=(req, res)=>{
-    var edit="UPDATE tbl_transaction SET category_id=?, transaction_date=?,transaction_category_type=?,remark=?,transaction_amount=?,transaction_business_id=? WHERE transaction_id=?;";
-        var updateRec=[
-            req.body.category_id,
-            req.body.transaction_date,
-            req.body.transaction_category_type,
-            req.body.remark,
-            req.body.transaction_amount,
-            req.body.transaction_business_id
-        ]
-        connection.query(edit,[...updateRec, req.params.id],
-        function (err, results){
-            if(err){
+exports.editrecord = (req, res) => {
+    var edit = "UPDATE tbl_transaction SET category_id=?, transaction_date=?,transaction_category_type=?,remark=?,transaction_amount=?,transaction_business_id=? WHERE transaction_id=?;";
+    var updateRec = [
+        req.body.category_id,
+        req.body.transaction_date,
+        req.body.transaction_category_type,
+        req.body.remark,
+        req.body.transaction_amount,
+        req.body.transaction_business_id
+    ]
+    connection.query(edit, [...updateRec, req.params.id],
+        function (err, results) {
+            if (err) {
                 res.end(JSON.stringify(err))
-            }else{
+            } else {
                 res.json(results)
             }
         }
@@ -243,13 +243,13 @@ exports.editrecord=(req, res)=>{
 }
 
 // chart show data
-exports.chartshowdata=(req, res)=>{
-    var chart="SELECT transaction_business_id,YEAR(transaction_date) AS year,SUM(CASE WHEN transaction_category_type = 'Cash In' THEN transaction_amount ELSE 0 END) AS 'in', SUM(CASE WHEN transaction_category_type = 'Cash Out' THEN transaction_amount ELSE 0 END) AS 'out' FROM tbl_transaction WHERE transaction_business_id = 3 GROUP BY  transaction_business_id, YEAR(transaction_date) ORDER BY  year, transaction_business_id;"
+exports.chartshowdata = (req, res) => {
+    var chart = "SELECT transaction_business_id,YEAR(transaction_date) AS year,SUM(CASE WHEN transaction_category_type = 'Cash In' THEN transaction_amount ELSE 0 END) AS 'in', SUM(CASE WHEN transaction_category_type = 'Cash Out' THEN transaction_amount ELSE 0 END) AS 'out' FROM tbl_transaction WHERE transaction_business_id = 3 GROUP BY  transaction_business_id, YEAR(transaction_date) ORDER BY  year, transaction_business_id;"
     connection.query(chart, [req.params.id],
-        function(err, results){
-            if(err){
+        function (err, results) {
+            if (err) {
                 res.end(JSON.stringify(err))
-            }else{
+            } else {
                 res.json(results)
             }
         }
