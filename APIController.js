@@ -48,7 +48,7 @@ exports.getbusinesdata = (req, res) => {
 
 exports.deletebusiness = (req, res) => {
     // console.log(req.params.id)
-    var deletedata = 'delete from tbl_business where business_id=?';
+    var deletedata = 'DELETE FROM tbl_business WHERE business_id=?';
     connection.query(deletedata, [req.params.id],
         function (err, results) {
             if (err) {
